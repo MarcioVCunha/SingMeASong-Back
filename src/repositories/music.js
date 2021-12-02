@@ -66,4 +66,36 @@ const upvote = async (id, voteCount) => {
   }
 };
 
-export { sendMusicToDatabase, selectSingleMusicByLink, selectSingleMusicById, upvote };
+const downvote = async (id, voteCount) => {
+  try {
+    await connection.query(`
+      UPDATE 
+        musics
+      SET
+        votes = $1
+      WHERE
+        id = $2;
+    `, [voteCount - 1, id]);
+
+    return (200);
+  } catch {
+    return (500);
+  }
+};
+
+const deleteMusic = async (id) => {
+  try {
+    await connection.query(`
+      DELETE FROM
+        musics
+      WHERE
+        id = $1;
+    `, [id]);
+
+    return (200);
+  } catch {
+    return (500);
+  }
+};
+
+export { sendMusicToDatabase, selectSingleMusicByLink, selectSingleMusicById, upvote, downvote, deleteMusic };
