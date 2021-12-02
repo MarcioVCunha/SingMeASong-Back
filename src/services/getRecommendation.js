@@ -10,6 +10,10 @@ const getRandomMusic = async (req, res) => {
   let randomMusicList = [];
   let prob = 1;
 
+  const allMusics = await musicRepository.getAllMusics();
+  
+  if (allMusics.rowCount === 0) return (404);
+
   while (!randomMusicList[0]) {
     prob = Math.random();
 

@@ -6,12 +6,12 @@ const downvote = async (id) => {
 
   if (!music) return (404);
 
-  if (music.votes <= -5) {
+  if (music.score <= -5) {
     musicStatus = await musicRepository.deleteMusic(id);
     return (musicStatus);
   }
 
-  musicStatus = await musicRepository.downvote(music.id, music.votes);
+  musicStatus = await musicRepository.downvote(music.id, music.score);
   return (musicStatus);
 };
 
