@@ -1,5 +1,5 @@
 import * as validation from '../validation/youtubeURLValidation.js';
-import * as musicService from '../services/postMusicService.js';
+import * as musicService from '../services/postMusic.js';
 
 const postMusic = async (req, res) => {
   const { name, youtubeLink } = req.body;
