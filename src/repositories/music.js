@@ -34,6 +34,40 @@ const selectSingleMusicById = async (id) => {
   }
 };
 
+const getAllMusicsLittleVoteCount = async () => {
+  try {
+    const littleVoteMuscis = await connection.query(`
+      SELECT
+        *
+      FROM
+        musics
+      WHERE
+        votes <= 10
+    `);
+
+    return (littleVoteMuscis.rows);
+  } catch {
+    return (500);
+  }
+};
+
+const getAllMusicsBigVoteCount = async () => {
+  try {
+    const BigVoteMusics = await connection.query(`
+      SELECT
+        *
+      FROM
+        musics
+      WHERE
+        votes > 10
+    `);
+
+    return (BigVoteMusics.rows);
+  } catch {
+    return (500);
+  }
+};
+
 const sendMusicToDatabase = async (name, link) => {
   try {
     await connection.query(`
@@ -98,4 +132,4 @@ const deleteMusic = async (id) => {
   }
 };
 
-export { sendMusicToDatabase, selectSingleMusicByLink, selectSingleMusicById, upvote, downvote, deleteMusic };
+export { sendMusicToDatabase, selectSingleMusicByLink, selectSingleMusicById, upvote, downvote, deleteMusic, getAllMusicsLittleVoteCount, getAllMusicsBigVoteCount };
