@@ -3,6 +3,7 @@ import express from 'express';
 import * as postMusicController from './controllers/postMusic.js';
 import * as upvoteController from './controllers/upvoteMusic.js';
 import * as downvoteController from './controllers/downvoteMusc.js';
+import * as randomMusicController from './controllers/getRecommendation.js';
 
 const app = express();
 
@@ -12,5 +13,7 @@ app.use(express.json());
 app.post('/recommendations', postMusicController.postMusic);
 app.post('/recommendations/:id/upvote', upvoteController.upvote);
 app.post('/recommendations/:id/downvote', downvoteController.downvote);
+
+app.get('/recommendations/random', randomMusicController.getRandomMusic);
 
 export default app;
