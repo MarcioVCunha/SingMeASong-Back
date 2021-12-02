@@ -5,7 +5,7 @@ const upvote = async (id) => {
 
   if (!music) return (404);
 
-  const upvoteAdded = await musicRepository.upvote(id, music.votes);
+  const upvoteAdded = await musicRepository.upvote(id, music.score);
 
   return (upvoteAdded);
 };

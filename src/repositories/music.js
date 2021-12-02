@@ -1,5 +1,20 @@
 import connection from '../database/database.js';
 
+const getAllMusics = async () => {
+  try {
+    const allMucis = await connection.query(`
+      SELECT
+        *
+      FROM
+        musics;
+     `);
+
+    return (allMucis);
+  } catch {
+    return (500);
+  }
+};
+
 const selectSingleMusicByLink = async (link) => {
   try {
     const singleMusic = await connection.query(`
@@ -8,7 +23,7 @@ const selectSingleMusicByLink = async (link) => {
       FROM
         musics
       WHERE
-        link = $1;
+        "youtubeLink" = $1;
     `, [link]);
 
     return (singleMusic.rows[0]);
@@ -34,6 +49,27 @@ const selectSingleMusicById = async (id) => {
   }
 };
 
+const getTopXMusics = async (amount) => {
+  try {
+    console.log(amount);
+
+    const topMusics = await connection.query(`
+      SELECT
+        *
+      FROM
+        musics
+      ORDER BY
+        score
+      DESC LIMIT $1;
+    `, [amount]);
+
+    return (topMusics.rows);
+  } catch (error) {
+    console.log(error);
+    return (500);
+  }
+};
+
 const getAllMusicsLittleVoteCount = async () => {
   try {
     const littleVoteMuscis = await connection.query(`
@@ -42,7 +78,7 @@ const getAllMusicsLittleVoteCount = async () => {
       FROM
         musics
       WHERE
-        votes <= 10
+        score <= 10
     `);
 
     return (littleVoteMuscis.rows);
@@ -59,7 +95,7 @@ const getAllMusicsBigVoteCount = async () => {
       FROM
         musics
       WHERE
-        votes > 10
+        score > 10
     `);
 
     return (BigVoteMusics.rows);
@@ -72,7 +108,7 @@ const sendMusicToDatabase = async (name, link) => {
   try {
     await connection.query(`
       INSERT INTO
-        musics (name, link)
+        musics (name, "youtubeLink")
       VALUES
         ($1, $2);
     `, [name, link]);
@@ -89,13 +125,13 @@ const upvote = async (id, voteCount) => {
       UPDATE 
         musics
       SET
-        votes = $1
+        score = $1
       WHERE
         id = $2;
     `, [voteCount + 1, id]);
 
     return (200);
-  } catch {
+  } catch (error) {
     return (500);
   }
 };
@@ -106,7 +142,7 @@ const downvote = async (id, voteCount) => {
       UPDATE 
         musics
       SET
-        votes = $1
+        score = $1
       WHERE
         id = $2;
     `, [voteCount - 1, id]);
@@ -132,4 +168,15 @@ const deleteMusic = async (id) => {
   }
 };
 
-export { sendMusicToDatabase, selectSingleMusicByLink, selectSingleMusicById, upvote, downvote, deleteMusic, getAllMusicsLittleVoteCount, getAllMusicsBigVoteCount };
+export {
+  getAllMusics,
+  selectSingleMusicByLink,
+  selectSingleMusicById,
+  getTopXMusics,
+  getAllMusicsLittleVoteCount,
+  getAllMusicsBigVoteCount,
+  sendMusicToDatabase,
+  upvote,
+  downvote,
+  deleteMusic
+};
