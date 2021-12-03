@@ -6,7 +6,7 @@ const randomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-const getRandomMusic = async (req, res) => {
+const getRandomMusic = async () => {
   let randomMusicList = [];
   let prob = 1;
 
