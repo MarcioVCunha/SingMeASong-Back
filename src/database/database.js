@@ -19,6 +19,7 @@ const databaseConfig = (NODE_ENV === 'production')
       rejectUnauthorized: false
     }
   }
+
   : {
     user: DB_USER,
     password: DB_PASS,
